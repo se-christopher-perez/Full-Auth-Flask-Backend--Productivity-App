@@ -17,9 +17,11 @@
 
 - pipenv install
 
-- pipenv run flask db upgrade
+- pipenv shell
 
-- pipenv run python seed.py
+- flask db upgrade
+
+- python seed.py
 
 ## Tools and Resources
 

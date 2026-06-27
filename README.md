@@ -1,6 +1,7 @@
 # Full-Auth-Flask-Backend--Productivity-App
 
 ## Project Description
+
 - Full authentication
 
 - A user-owned resource (e.g., notes, journal entries, workouts, expenses, tasks)
@@ -57,7 +58,7 @@
 
 ## Endpoints
 
-### Auth
+### Authentication
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | /signup | Register a new user |

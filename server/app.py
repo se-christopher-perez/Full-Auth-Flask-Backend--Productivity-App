@@ -112,10 +112,44 @@ class JournalEntryIndex(Resource):
         except IntegrityError:
             return {"error": "422 Unprocessable Entity"}, 422
 
+class JournalEntryDetail(Resource):
+
+    def patch(self, id):
+
+        journal_entry = JournalEntry.query.filter(JournalEntry.id == id).first()
+
+        if journal_entry.user_id == session["user_id"]:
+            data = request.get_json()
+
+            journal_entry.title = data.get("title", journal_entry.title)
+            journal_entry.content = data.get("content", journal_entry.content)
+
+            db.session.commit()
+
+            return JournalEntrySchema().dump(journal_entry), 200
+        
+        else:
+            return {"error": "403 Forbidden"}, 403
+
+    def delete(self, id):
+
+        journal_entry = JournalEntry.query.filter(JournalEntry.id == id).first()
+
+        if journal_entry.user_id == session["user_id"]:
+            db.session.delete(journal_entry)
+            db.session.commit()
+
+            return {}, 204
+        
+        else:
+            return {"error": "403 Forbidden"}, 403
+
 api.add_resource(Signup, "/signup", endpoint="signup")
 api.add_resource(CheckSession, "/check_session", endpoint="check_session")
 api.add_resource(Login, "/login", endpoint="login")
 api.add_resource(Logout, "/logout", endpoint="logout")
+api.add_resource(JournalEntryIndex, "/journal_entries", endpoint="journal_entries")
+api.add_resource(JournalEntryDetail, "/journal_entries/<int:id>", endpoint="journal_entry")
 
 
 if __name__ == '__main__':

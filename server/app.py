@@ -75,6 +75,44 @@ class Logout(Resource):
             return {}, 204
         
         return {}, 401
+    
+class JournalEntryIndex(Resource):
+
+    def get(self):
+        page = request.args.get("page", 1, type=int)
+        per_page = request.args.get("per_page", 10, type=int)
+
+        paginated = JournalEntry.query.filter(
+            JournalEntry.user_id == session["user_id"]
+            ).paginate(page=page, per_page=per_page, error_out=False)
+
+        return {
+            "page": paginated.page,
+            "per_page": paginated.per_page,
+            "total": paginated.total,
+            "total_pages": paginated.pages,
+            "items": [JournalEntrySchema().dump(entry) for entry in paginated.items]
+        }, 200
+    
+    def post(self):
+        data = request.get_json()
+
+        entry = JournalEntry(
+            
+            title = data.get("title"),
+            content = data.get("content"),
+            user_id = session["user_id"]
+
+        )
+
+        try:
+            db.session.add(entry)
+            db.session.commit()
+            
+            return JournalEntrySchema().dump(entry), 201
+
+        except IntegrityError:
+            return {"error": "422 Unprocessable Entity"}, 422
 
 api.add_resource(Signup, "/signup", endpoint="signup")
 api.add_resource(CheckSession, "/check_session", endpoint="check_session")

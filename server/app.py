@@ -8,7 +8,7 @@ from models import User, JournalEntry, UserSchema, JournalEntrySchema
 @app.before_request
 def check_if_logged_in():
 
-    open_access_list = ["signup", "login", "check_sesion"]
+    open_access_list = ["signup", "login", "check_session"]
 
     if request.endpoint not in open_access_list and not session.get("user_id"):
         return {"error": "401 Unauthorized Entry"}, 401

@@ -20,9 +20,9 @@
 
 - pipenv shell
 
-- flask db upgrade
-
 - python seed.py
+
+- python app.py ( http://localhost:5555 )
 
 ## Tools and Resources
 

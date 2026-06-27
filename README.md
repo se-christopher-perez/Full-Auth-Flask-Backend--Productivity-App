@@ -32,7 +32,7 @@
 
 - Git + GitHub
 
-### Pipenv: The following Python packages:
+### Python Packages:
 
 - flask = "2.2.2"
 
